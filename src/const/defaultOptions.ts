@@ -13,10 +13,13 @@ type RelativeUnits =
 export type Numeric = number | string
 export type MeasurementUnit = AbsoluteUnits | RelativeUnits
 export type BreakpointBehavior = 'up' | 'down' | 'only'
-export interface Breakpoints {
-  [breakpointName: string]: Breakpoint
-}
-export interface LayoutOptions {
+
+export type DefaultBreakpointNames = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+export type Breakpoints<Names extends string> = Record<Names, Breakpoint>
+
+export interface LayoutOptions<
+  BreakpointNames extends string = DefaultBreakpointNames
+> {
   /**
    * Measurement unit that suffixes numeric prop values.
    * @default "px"
@@ -28,7 +31,7 @@ export interface LayoutOptions {
   /**
    * Map of layout breakpoints.
    */
-  breakpoints: Breakpoints
+  breakpoints: Breakpoints<BreakpointNames>
   /**
    * Breakpoint name to use when no explicit breakpoint
    * name is specified in a prop name.
@@ -55,7 +58,7 @@ export interface Breakpoint {
   displayMode?: 'fullscreen' | 'standalone' | 'minimal-ui' | 'browser'
 }
 
-const defaultOptions: LayoutOptions = {
+const defaultOptions: LayoutOptions<DefaultBreakpointNames> = {
   defaultUnit: 'px',
   defaultBehavior: 'up',
   defaultBreakpointName: 'xs',
