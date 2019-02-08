@@ -8,7 +8,7 @@ import openBreakpoint from '../utils/breakpoints/openBreakpoint'
 import closeBreakpoint from '../utils/breakpoints/closeBreakpoint'
 import mergeBreakpoints from '../utils/breakpoints/mergeBreakpoints'
 
-export type BreakpointRef = string | Breakpoint
+export type BreakpointRef = keyof typeof Layout.options.breakpoints | Breakpoint
 
 export interface OnlyProps extends GenericProps {
   /**

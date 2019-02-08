@@ -1,11 +1,12 @@
 import defaultOptions, {
+  DefaultBreakpointNames,
   LayoutOptions,
   Breakpoint,
 } from './const/defaultOptions'
 import invariant from './utils/invariant'
 
 class Layout {
-  public options: LayoutOptions = defaultOptions
+  public options: LayoutOptions<DefaultBreakpointNames>
   protected isConfigureCalled: boolean = false
 
   constructor(options: Partial<LayoutOptions>) {
@@ -13,9 +14,12 @@ class Layout {
   }
 
   /**
-   * Applies global layout options.
+   * Provides global layout configuration.
    */
-  public configure(options: Partial<LayoutOptions>, warnOnMultiple = true) {
+  public configure<BreakpointNames extends string = DefaultBreakpointNames>(
+    options: Partial<LayoutOptions<BreakpointNames>>,
+    warnOnMultiple: boolean = true,
+  ) {
     if (warnOnMultiple) {
       invariant(
         !this.isConfigureCalled,
@@ -25,8 +29,8 @@ class Layout {
 
     invariant(
       options && typeof options === 'object',
-      'Failed to configure Layout: expected an options Object, but got: %o.',
-      options,
+      'Failed to configure Layout: expected options to be an Object, but got: %o.',
+      typeof options,
     )
 
     this.options = {
@@ -59,10 +63,10 @@ class Layout {
   }
 
   /**
-   * Returns the collection of breakpoint names present
-   * in the current layout configuration.
+   * Returns the list of all breakpoint names.
    */
   public getBreakpointNames(): string[] {
+    // @todo adjust to use "BreakpointNames" from generics
     return Object.keys(this.options.breakpoints)
   }
 
